@@ -1,26 +1,37 @@
 package org.example.spring_boot_crud.models;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
 
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @NotBlank(message = "Имя не может быть пустым")
+    @Size(min = 2, max = 50, message = "Имя должно содержать от 2 до 50 символов")
     @Column(name = "name")
     private String name;
+
+    @Min(value = 1, message = "Возраст должен быть не меньше 1")
+    @Max(value = 120, message = "Возраст должен быть не больше 120")
     @Column(name = "age")
     private int age;
 
+    @NotBlank(message = "Email не может быть пустым")
+    @Email(message = "Некорректный формат email")
     @Column(name = "email")
     private String email;
 
-
     public User() {
     }
-
 
     public User(String name, int age, String email) {
         this.name = name;
@@ -34,6 +45,16 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     public String getName() {
@@ -59,6 +80,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 }
